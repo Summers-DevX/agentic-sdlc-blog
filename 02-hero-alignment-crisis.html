@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Alignment Crisis - Hero Image</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .hero-container {
+            width: 1200px;
+            height: 800px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2e1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 80px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-blur {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(80px);
+        }
+
+        .blur-1 {
+            width: 400px;
+            height: 400px;
+            background: #ff006e;
+            top: -100px;
+            left: -100px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .blur-2 {
+            width: 300px;
+            height: 300px;
+            background: #ffa500;
+            bottom: -50px;
+            right: -50px;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .left-content {
+            flex: 1;
+            z-index: 2;
+            max-width: 500px;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin-bottom: 30px;
+        }
+
+        .profile-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 0, 110, 0.3) 0%, rgba(255, 165, 0, 0.2) 70%, transparent 100%);
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            filter: blur(30px);
+            z-index: 1;
+        }
+
+        .profile-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 165, 0, 0.3);
+            z-index: 2;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.4), 0 0 60px rgba(255, 165, 0, 0.2);
+            filter: brightness(1.1) contrast(1.15) saturate(1.1);
+        }
+
+        .byline {
+            position: absolute;
+            bottom: 80px;
+            right: 60px;
+            font-size: 16px;
+            color: #888;
+            font-weight: 500;
+            z-index: 3;
+            text-align: right;
+        }
+
+        .byline strong {
+            color: #ffa500;
+        }
+
+        .title {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .title-primary {
+            color: #ffa500;
+            display: block;
+        }
+
+        .title-secondary {
+            color: #ff006e;
+            display: block;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .series-badge {
+            display: inline-block;
+            background: rgba(255, 165, 0, 0.15);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #ffa500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-text {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .right-content {
+            flex: 1;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* MEDIA PLACEHOLDER - Video or Image */
+        .media-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            filter: drop-shadow(0 0 30px rgba(255, 165, 0, 0.2));
+        }
+
+        .media-placeholder video,
+        .media-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(none);
+        }
+
+        .logo-text {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .logo-text-small {
+            color: #999;
+            font-size: 11px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <div class="bg-blur blur-1"></div>
+        <div class="bg-blur blur-2"></div>
+
+        <div class="logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#fff"/>
+                <circle cx="12" cy="12" r="7" fill="#000"/>
+                <circle cx="12" cy="12" r="3" fill="#fff"/>
+            </svg>
+            <div>
+                <div class="logo-text">OutSystems</div>
+                <div class="logo-text-small">Engineering</div>
+            </div>
+        </div>
+
+        <div class="left-content">
+            <div class="profile-wrapper">
+                <div class="profile-glow"></div>
+                <img src="profile.jpg" alt="London Summers" class="profile-image" />
+            </div>
+
+            <div class="series-badge">Part 2 of 3</div>
+            <h1 class="title">
+                <span class="title-primary">The Alignment</span>
+                <span class="title-secondary">Crisis</span>
+            </h1>
+            <p class="subtitle">Speed without alignment is chaos at scale. Why your team is drowning in 500 PRs per week.</p>
+            <p class="cta-text">Read Part 2 • 4-5 minutes</p>
+        </div>
+
+        <div class="right-content">
+            <div class="media-placeholder">
+                <video autoplay muted loop playsinline>
+                    <source src="diagram-part2.mp4" type="video/mp4">
+                    <!-- Fallback to image if video doesn't load -->
+                    <img src="diagram-part2.png" alt="Alignment Crisis Diagram" />
+                </video>
+            </div>
+        </div>
+
+        <div class="byline">by <strong>London Summers</strong></div>
+    </div>
+</body>
+</html>

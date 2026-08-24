@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Agentic Sessions - Part 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 728px;
+            margin: 0 auto;
+            height: 600px;
+            background: linear-gradient(135deg, #1a3a34 0%, #00d4a8 50%, #00d4ff 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 30px 40px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 168, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .outsystems-logo {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            color: #00d4a8;
+            line-height: 1.2;
+            text-align: center;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .series-badge {
+            background: rgba(0, 212, 168, 0.2);
+            border: 1px solid rgba(0, 212, 168, 0.5);
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+
+        .hero-title span.accent-teal {
+            color: #00d4a8;
+        }
+
+        .hero-title span.accent-cyan {
+            color: #00d4ff;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 16px;
+            max-width: 100%;
+        }
+
+        .hero-media {
+            width: 100%;
+            height: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #00d4a8;
+            box-shadow: 0 0 30px rgba(0, 212, 168, 0.6), inset 0 0 20px rgba(0, 212, 255, 0.2);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Article Section */
+        .article {
+            max-width: 728px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #7a7a7a;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: #3a3a3a;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .article-content li {
+            margin-bottom: 12px;
+            color: #3a3a3a;
+        }
+
+        .article-content strong {
+            color: #3a3a3a;
+            font-weight: 600;
+        }
+
+        .article-content em {
+            color: #3a3a3a;
+            font-style: italic;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 30px 0 15px 0;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #7a7a7a;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 500px;
+                padding: 30px 20px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                font-size: 32px;
+            }
+
+            .article {
+                padding: 0 20px;
+            }
+
+            .article-content h2 {
+                font-size: 24px;
+            }
+
+            .article-content h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-header">
+            
+            <div class="series-badge">Part 3 of 3</div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="accent-teal">Collaborative</span> <span class="accent-cyan">Agentic</span> Sessions
+            </h1>
+            <p class="hero-subtitle">Synchronous, real-time collaboration where humans and agents build together, at machine speed.</p>
+
+            <div class="hero-media">
+                <img src="diagram-part3.png" alt="Collaborative Agentic Sessions Diagram">
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <img src="profile.jpg" alt="London Summers" class="profile-image">
+            <div class="profile-info">
+                <h3>by London Summers</h3>
+                <p>7 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Section -->
+    <article class="article">
+        <div class="article-meta">
+        </div>
+
+        <div class="article-content">
+
+        <p>The SDLC breaks at agentic speed because coordination fails. Tickets become stale. 1000 PRs per week pile up with no review possible. There's no shared space where the team can see what's being built and course correct in real-time.</p>
+
+        <p>You need a completely different model, one where planning, context-gathering, decision-making, and development happen simultaneously, in one place, with everyone watching the same code materialise.</p>
+
+        <p>That model is collaborative agentic sessions.</p>
+
+        <h2>From Separate Phases to Continuous Collaboration</h2>
+
+        <p>Traditional SDLC separates concerns, Plan → Build → Review → Test → Deploy. Agents obliterate that timeline. <strong>The phases merge into simultaneity. Decisions emerge as code materializes, not before it.</strong> The only way to prevent divergence at agentic speed is to collapse the communication gaps. Planning, context-gathering, decision-making, and development must happen together, in one space, in real-time.</p>
+
+        <h2>The Concrete Workflow</h2>
+
+        <p>A PM describes a feature. A designer sketches the user flow in real-time, sharing their screen. Questions emerge, they discuss, they align on the design. A developer asks an architectural question. An architect agent jumps in with options. They discuss tradeoffs, decide.</p>
+
+        <p>An implementation agent starts building, visible to the whole team in real time. It writes code, runs tests, asks questions in the chat when it hits ambiguity. The PM notices something the agent missed, points it out. The agent course corrects immediately. A designer checks the UI, they update the code live together.</p>
+
+        <p>Within hours, the feature is built, validated, and aligned. No need to review PRs, the review has been happening all along.</p>
+
+        <h2>What CAS Provides</h2>
+
+        <h3>1. Real-Time Code Visibility</h3>
+        <p>File edits appear instantly in the chat. Everyone connected sees them. A designer watches UI components render. An architect sees database schema changes. Visibility kills ambiguity.</p>
+
+        <h3>2. Synchronous Multi-Team Collaboration</h3>
+        <p>Multiple team members in the same session via WebSockets. When the agent asks a question, the PM, architect, and designer see it simultaneously and respond immediately. Decisions happen in real-time, not over async rounds of feedback.</p>
+
+        <h3>3. Session-Scoped Git Branches</h3>
+        <p>Each session gets its own git branch with full CI/CD access. Tests run in real-time. Build output appears live. If something fails, the team sees it instantly. No hidden commits to main.</p>
+
+        <h3>4. Live Tool Visibility</h3>
+        <p>Git operations, shell commands, and file edits are all visible to every team member. When the agent runs tests, everyone sees the output. No "wait, what did the agent just do?"</p>
+
+        <h3>5. Encrypted Integration</h3>
+        <p>GitHub, Jira, Confluence, Anthropic integrations all stored securely. Security without friction.</p>
+
+        <h2>How This Solves the Consensus Problem</h2>
+
+        <p><strong>Velocity without fragmentation,</strong> When everyone sees the same code materialising in real-time, cracks in understanding surface immediately. Conflicts are resolved in minutes, not discovered in production a month later.</p>
+
+        <p><strong>Context for agents,</strong> Agents have access to the entire conversation. Requirements, design, architectural decisions, reasoning. They're building within a shared mental model, not in isolation.</p>
+
+        <p><strong>Reduced cognitive load for humans,</strong> Humans aren't reviewing 1000 PRs. They're having a continuous conversation with agents about a feature being built. It's collaborative, not batch review.</p>
+
+        <h2>The Three Macro-Priorities</h2>
+
+        <h3>1. Economic Sustainability</h3>
+        <p>Intelligent model routing ensures teams aren't burning budget on the wrong tools. Real-time cost monitoring, dynamic model selection, and user-configurable budgets make agentic development economically viable at scale. Without this, teams overspend on high-capability models for routine tasks.</p>
+
+        <h3>2. Omnipresent Collaboration</h3>
+        <p>Agents work on your devices, in your spaces, at your pace. Native iOS/Android apps with full parity to desktop. The pattern, collaboration happens wherever work happens, not just at a desk.</p>
+
+        <h3>3. Real-Time Guardrails</h3>
+        <p>Validation shifts from post-merge gates to live-development checks. Security scanning as code is written, not weeks later. Performance budgeting that prevents regressions before they're committed. Specialised agents (security, performance, architecture) work in parallel, each contributing to decisions as they emerge.</p>
+
+        <h2>What Needs to Change</h2>
+
+        <p>Current tools won't work. Everything needs to be rewritten from scratch,</p>
+
+        <ul>
+            <li><strong>Git branching</strong> - Branches become sessions, not isolation mechanisms</li>
+            <li><strong>Communication channels</strong> - Slack threads are too ephemeral. Conversations need to be tied to code and decisions</li>
+            <li><strong>Change validation</strong> - PRs are retrospective. Validation happens during development, not after</li>
+            <li><strong>Deployment models</strong> - Code is deployed as it's validated, not batched into releases</li>
+        </ul>
+
+        <h2>The Future</h2>
+
+        <p>The SDLC didn't evolve to handle agent-generated code flowing at machine speed. It broke. The fix is <strong>synchronous, real-time, multi-role collaboration where everyone sees what's being built, everyone contributes to decisions, and alignment happens continuously, not retrospectively.</strong></p>
+
+        <p>CAS proves it's possible. The question now is, will your organisation build it, or will you optimise a dead paradigm while your competitors operate at machine speed?</p>
+
+        </div>
+    </article>
+</body>
+</html>

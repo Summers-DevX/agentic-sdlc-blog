@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Alignment Crisis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.75;
+            color: #3a3a3a;
+            background: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 728px;
+            margin: 0 auto;
+            height: 500px;
+            background: linear-gradient(135deg, #fff8f0 0%, #ffa500 50%, #ff006e 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 165, 0, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%);
+            pointer-events: none;
+        }
+
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .outsystems-logo {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #ffa500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .series-badge {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffa500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+            color: #000;
+        }
+
+        .hero-title span.accent-orange {
+            color: #ffa500;
+        }
+
+        .hero-title span.accent-pink {
+            color: #ff006e;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 24px;
+            max-width: 500px;
+            font-weight: 500;
+        }
+
+        .hero-media {
+            width: 100%;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid #ffa500;
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.4), inset 0 0 20px rgba(255, 0, 110, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #ffa500;
+            font-size: 36px;
+        }
+
+        .profile-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .container {
+            max-width: 728px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            line-height: 1.4;
+            color: #666;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #757575;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .read-time {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        article {
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        h2 {
+            font-size: 1.9em;
+            font-weight: 700;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            color: #000;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: #f9f9f9;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 30px 0;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .highlight strong {
+            color: #000;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: #eee;
+            margin: 50px 0;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        em {
+            font-style: italic;
+            color: #666;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .series-nav {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 40px 0;
+            font-size: 0.95em;
+        }
+
+        .series-nav strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .series-nav p {
+            margin: 8px 0;
+        }
+
+        .series-nav a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .series-nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .container {
+                max-width: 100%;
+                padding: 40px;
+            }
+            a {
+                color: #2563eb;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 450px;
+                padding: 25px 20px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .hero-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-image {
+                width: 90px;
+                height: 90px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-header">
+            <div class="outsystems-logo">OS</div>
+            <div class="series-badge">Part 2 of 3</div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                The Alignment <span class="accent-orange">Crisis</span>
+            </h1>
+            <p class="hero-subtitle">When agents operate at machine speed, every assumption your SDLC was built on collapses.</p>
+
+            <div class="hero-media">
+                <img src="diagram-part2.png" alt="SDLC Collapse">
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <div class="profile-image">LS</div>
+            <div class="profile-info">
+                <h3>by London Summers</h3>
+                <p>4-5 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Section -->
+    <div class="container">
+        <article>
+            <div class="article-header">
+                <h1>The Alignment Crisis—Why Speed Breaks Your Team</h1>
+                <p class="subtitle">When agents move faster than humans can coordinate</p>
+                <div class="article-meta">
+                    <span>OutSystems Engineering</span>
+                    <span>•</span>
+                    <span class="read-time">4-5 min read</span>
+                </div>
+            </div>
+
+            <div class="series-nav">
+                <strong>📚 Part 2 of 3</strong>
+                <p><strong>Part 1:</strong> Operating the SDLC in the Dark</p>
+                <p><strong>Part 2:</strong> The Alignment Crisis—Why Speed Breaks Your Team (this article)</p>
+                <p><strong>Part 3:</strong> Collaborative Agentic Sessions—The Real Future of Development</p>
+            </div>
+
+            <p>The traditional SDLC was engineered for human speed. The moment agents operate at machine velocity, that entire operational model collapses.</p>
+
+            <p>The problem isn't that agents are fast. The problem is that governance, safety, and verification all fail when the thing building your system is 100x faster than the humans deciding what it should build.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>The SDLC's Hidden Brittleness</h2>
+
+            <p>Your current SDLC works because humans are slow. Planning, building, reviews, and testing took weeks. This serialization created natural checkpoints for correction.</p>
+
+            <p>An agent obliterates this timeline:</p>
+
+            <ul>
+                <li>Ship working code in hours, not weeks</li>
+                <li>Generate 1000 PRs while you're sleeping</li>
+                <li>Iterate on architecture faster than teams can discuss it</li>
+                <li>Accumulate technical decisions humans can't audit in real time</li>
+            </ul>
+
+            <p>Then apply the old SDLC: review 1000 PRs, hold planning meetings, get CAB approval. By then, the codebase evolved three times. The agent moved on.</p>
+
+            <p>This isn't a bottleneck. It's a paradigm collapse.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>Where It Breaks First</h2>
+
+            <p><strong>Tickets become stale before they're started.</strong> The agent ships code while humans are still reading Slack notifications.</p>
+
+            <p><strong>PR reviews vanish.</strong> You can't read inhuman-scale code. Rubber-stamping 1000 PRs teaches you nothing about what's being built.</p>
+
+            <div class="highlight">
+                <strong>Concrete scenario:</strong> An agent refactors a library across your codebase and submits 400 PRs overnight. At 10 minutes per review, that's 66 hours of work. You can't execute it. You rubber-stamp or languish. Either way, code review as a control mechanism is dead.
+            </div>
+
+            <p><strong>Ceremonies multiply.</strong> Sprints, planning poker, CAB meetings—they coordinated humans, not agents. Now they just slow humans down.</p>
+
+            <p><strong>Governance breaks.</strong> You can't approve 2000 decisions per day. You won't even know what they are.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>What Becomes Critical</h2>
+
+            <p><strong>Compliance-as-Code:</strong> Policy guardrails embedded in agent logic, preventing bad code upfront.</p>
+
+            <p><strong>Context Lakes:</strong> A knowledge graph of your architecture and patterns. Without it, agents decide in isolation.</p>
+
+            <p><strong>Fresh Environments:</strong> Ephemeral infrastructure spinning up on demand, not days/weeks to test.</p>
+
+            <p><strong>Agentic Attestation:</strong> An agent's audit trail replaces human sign-off.</p>
+
+            <p><strong>M&O as Primary Safety:</strong> Code ships faster than humans can review it. Observability becomes your last line of defence.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>The Path Forward</h2>
+
+            <p>Agentic development doesn't need faster ceremonies. It needs different ones. Not better gates. Better guardrails. Not human oversight. Machine-native verification.</p>
+
+            <p>That's a complete architectural shift.</p>
+
+            <div class="section-divider"></div>
+
+            <div class="series-nav">
+                <strong>📚 Continue the Series</strong>
+                <p><strong>Next:</strong> <a href="#part-3">Part 3: Collaborative Agentic Sessions—The Real Future of Development</a></p>
+                <p>Discover how to build software when agents and humans work at the same speed through collaborative sessions.</p>
+            </div>
+
+            <div class="footer">
+                <p>© 2026 OutSystems. Published in OutSystems Engineering.</p>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

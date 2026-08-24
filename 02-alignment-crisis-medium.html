@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why the SDLC Breaks at Agentic Scale - Part 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 728px;
+            margin: 0 auto;
+            height: 600px;
+            background: linear-gradient(135deg, #3d2214 0%, #ffa500 50%, #ff006e 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 30px 40px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 165, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .outsystems-logo {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            color: #ffa500;
+            line-height: 1.2;
+            text-align: center;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .series-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+
+        .hero-title span.accent-orange {
+            color: #ffa500;
+        }
+
+        .hero-title span.accent-pink {
+            color: #ff006e;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 16px;
+            max-width: 100%;
+        }
+
+        .hero-media {
+            width: 100%;
+            height: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ffa500;
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.6), inset 0 0 20px rgba(255, 0, 110, 0.2);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Article Section */
+        .article {
+            max-width: 728px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #7a7a7a;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: #3a3a3a;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .article-content li {
+            margin-bottom: 12px;
+            color: #3a3a3a;
+        }
+
+        .article-content strong {
+            color: #3a3a3a;
+            font-weight: 600;
+        }
+
+        .scenario {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #ffa500;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .scenario p {
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 500px;
+                padding: 30px 20px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                font-size: 32px;
+            }
+
+            .article {
+                padding: 0 20px;
+            }
+
+            .article-content h2 {
+                font-size: 24px;
+            }
+
+            .article-content h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-header">
+            
+            <div class="series-badge">Part 2 of 3</div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Why the <span class="accent-orange">SDLC</span> <span class="accent-pink">Breaks</span>
+            </h1>
+            <p class="hero-subtitle">Every SDLC assumption collapses when agents operate at machine speed.</p>
+
+            <div class="hero-media">
+                <img src="diagram-part2.png" alt="SDLC Breaks Diagram">
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <img src="profile.jpg" alt="London Summers" class="profile-image">
+            <div class="profile-info">
+                <h3>by London Summers</h3>
+                <p>5 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Section -->
+    <article class="article">
+        <div class="article-meta">
+        </div>
+
+        <div class="article-content">
+
+        <p>The traditional SDLC was engineered for human speed. Every gate, ceremony, and review process assumed people would be making decisions. That assumption dies the moment agents operate at machine velocity.</p>
+
+        <h2>The Hidden Brittleness</h2>
+
+        <p>Your current SDLC works because humans are slow. Planning took weeks. Building took weeks. Reviews took days. This serialization created natural checkpoints where humans could course correct.</p>
+
+        <p>An agent obliterates this timeline. A single agent can generate 1000 PRs across your codebase while you're sleeping. Iterate on architecture faster than your team can discuss the previous version. Deploy code before your change control board meets.</p>
+
+        <p>Now apply the old SDLC, review those 1000 PRs, hold a planning meeting, get CAB approval, schedule a release train. By the time any of that happens, the codebase has evolved three times. This isn't a bottleneck. This is a paradigm collapse.</p>
+
+        <h2>Where It Breaks First</h2>
+
+        <div class="scenario">
+            <p><strong>The concrete scenario:</strong> An agent refactors a deprecated library across your codebase and submits 400 PRs overnight. If your team takes 10 minutes to review each PR, you've inherited 66 hours of manual review work. Your team can't execute this review, so code review as a control mechanism is dead.</p>
+        </div>
+
+        <p><strong>Tickets become stale.</strong> Before they're even started, the agent has already shipped.</p>
+
+        <p><strong>Ceremonies multiply and paralyse.</strong> Sprints, standups, CAB meetings all slow down humans while the agent races ahead.</p>
+
+        <p><strong>Governance breaks.</strong> You can't approve 2000 agent decisions per day. You won't even know what those decisions are.</p>
+
+        <h2>You Can't Optimise Your Way Out</h2>
+
+        <p>The instinct is to fix this by going faster. More parallel reviews, stronger CI/CD, faster meetings. None of that works. You can't make humans review code faster. You can't govern a system when governance lags implementation by hours.</p>
+
+        <p><strong>The SDLC doesn't need optimisation. It needs replacement.</strong></p>
+
+        <h2>What Becomes Critical</h2>
+
+        <p>When agents operate at scale, the bottleneck shifts from making decisions to preventing bad ones upfront.</p>
+
+        <p><strong>Context Lakes,</strong> A centralised knowledge graph of your architecture, patterns, and constraints. Without this, agents make decisions in isolation. With it, every decision is informed by organisational context and past learnings.</p>
+
+        <p><strong>Compliance-as-Code,</strong> Policy guardrails embedded in agent logic. The agent can't generate non-compliant code in the first place.</p>
+
+        <p><strong>Fresh Environments,</strong> Agents iterate in isolated, just-in-time infrastructure. Ephemeral rings spin up on demand, not weeks to test against stale environments.</p>
+
+        <p><strong>Agentic Attestation,</strong> An agent's decision log becomes your audit trail. "Security check: passed. Architecture check: passed. Standards compliance: passed." Deterministic, logged verification replaces human sign-off.</p>
+
+        <p><strong>Observability as Primary Safety Layer,</strong> Code ships faster than humans can review it. M&O becomes your last line of defence with automated anomaly detection and agent-driven remediation.</p>
+
+        <p><strong>Specialised Agents,</strong> One agent can't make good decisions across security, architecture, compliance, and feature development simultaneously. Specialised agents with distinct decision authorities operate within guardrails.</p>
+
+        <h2>The Economics Invert</h2>
+
+        <p>Token costs become your primary constraint, not human time. Infrastructure costs scale with iteration velocity. The ROI of custom solutions improves because implementation is now cheap, governance is expensive.</p>
+
+        <p>Teams still operating the old SDLC will struggle, ceremonies preventing deployment while humans drown in decisions. They'll blame agents for being "too fast" when really they've got a system mismatch.</p>
+
+        <h2>The Path Forward</h2>
+
+        <p>The SDLC isn't broken because agents are fast. It's broken because every mechanism that kept it together, human review, human approval, human pacing, assumed human speed.</p>
+
+        <p>Agentic development requires different ceremonies. Not better gates, but better guardrails. Not human oversight, but machine-native verification. Not serial planning, but continuous alignment through shared context.</p>
+
+        <p>That's not an optimisation. That's a complete architectural shift.</p>
+
+        </div>
+    </article>
+</body>
+</html>

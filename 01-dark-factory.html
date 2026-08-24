@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating the SDLC in the Dark</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.75;
+            color: #3a3a3a;
+            background: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 728px;
+            margin: 0 auto;
+            height: 500px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #00d4ff 50%, #ff006e 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%);
+            pointer-events: none;
+        }
+
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .outsystems-logo {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .series-badge {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #00d4ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+            color: #000;
+        }
+
+        .hero-title span.accent-cyan {
+            color: #00d4ff;
+        }
+
+        .hero-title span.accent-pink {
+            color: #ff006e;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 24px;
+            max-width: 500px;
+            font-weight: 500;
+        }
+
+        .hero-media {
+            width: 100%;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), inset 0 0 20px rgba(255, 0, 110, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #00d4ff;
+            font-size: 36px;
+        }
+
+        .profile-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .container {
+            max-width: 728px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            line-height: 1.4;
+            color: #666;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #757575;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .read-time {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        article {
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        h2 {
+            font-size: 1.9em;
+            font-weight: 700;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            color: #000;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: #f9f9f9;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 30px 0;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .highlight strong {
+            color: #000;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: #f0f0f0;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: #eee;
+            margin: 50px 0;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        em {
+            font-style: italic;
+            color: #666;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .series-nav {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 40px 0;
+            font-size: 0.95em;
+        }
+
+        .series-nav strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .series-nav p {
+            margin: 8px 0;
+        }
+
+        .series-nav a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .series-nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .container {
+                max-width: 100%;
+                padding: 40px;
+            }
+            a {
+                color: #2563eb;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 450px;
+                padding: 25px 20px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .hero-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-image {
+                width: 90px;
+                height: 90px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-header">
+            <div class="outsystems-logo">OS</div>
+            <div class="series-badge">Part 1 of 3</div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Operating the <span class="accent-cyan">SDLC</span> in the <span class="accent-pink">Dark</span>
+            </h1>
+            <p class="hero-subtitle">When agents operate at machine speed, the entire lifecycle collapses. Here's what replaces it.</p>
+
+            <div class="hero-media">
+                <img src="diagram-part1.png" alt="Dark Factory Architecture">
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <div class="profile-image">LS</div>
+            <div class="profile-info">
+                <h3>by London Summers</h3>
+                <p>7 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Section -->
+    <div class="container">
+        <article>
+            <div class="article-header">
+                <h1>Operating the SDLC in the Dark: When the Entire Lifecycle Collapses</h1>
+                <p class="subtitle">Why agentic development doesn't optimise your SDLC—it replaces it</p>
+                <div class="article-meta">
+                    <span>OutSystems Engineering</span>
+                    <span>•</span>
+                    <span class="read-time">7 min read</span>
+                </div>
+            </div>
+
+            <div class="series-nav">
+                <strong>📚 Part 1 of 3</strong>
+                <p><strong>Part 1:</strong> Operating the SDLC in the Dark (this article)</p>
+                <p><strong>Part 2:</strong> The Alignment Crisis—Why Speed Breaks Your Team</p>
+                <p><strong>Part 3:</strong> Collaborative Agentic Sessions—The Real Future of Development</p>
+            </div>
+
+            <p>A "dark factory" is a manufacturing facility operating 24/7 with no humans on the floor. Robots work within an environment where humans are absent, except for design and exceptions.</p>
+
+            <p>Your SDLC can operate the same way.</p>
+
+            <p>Imagine AI code commits triggering autonomous verification and orchestration. Releases flow continuously and progressively across regions with zero human intervention. Incidents are detected, diagnosed, and resolved by agents. Compliance is enforced by policy, not approval meetings. On-call engineers and release managers are gone. Change advisory boards are gone. The entire pipeline runs deterministically, auditable at every step, with humans entirely outside the operational loop.</p>
+
+            <p>The infrastructure exists today.</p>
+
+            <p>But here's what's uncomfortable: the agentic era doesn't make your current SDLC faster. It kills it.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>The SDLC Has Collapsed—Not Optimised</h2>
+
+            <p>The prevailing narrative is that AI is a "10x developer tool." It's wrong. That framing assumes your workflow stays the same and only velocity improves. It doesn't.</p>
+
+            <p>The agentic paradigm isn't an enhancement to the SDLC you've spent decades building. It's a replacement. The entire lifecycle—from planning through deployment—has fundamentally broken because every assumption that made it work was predicated on human availability, human decision-making, and human speed.</p>
+
+            <p>When an agent generates 500 pull requests per week, your team reviewing 10 per day isn't a bottleneck worth optimising. It's a fake bottleneck. It only exists because you're forcing a human ritual onto a machine workflow.</p>
+
+            <p>When ceremonies (sprints, story points, planning poker, CAB meetings, release trains) consume 30% of team capacity, and agents eliminate the need for them entirely, you're not speeding up the SDLC. You're erasing it.</p>
+
+            <p>The shift isn't "faster humans." It's "humans governing agents." And that requires a completely new model.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>From "Human-Led, Tool-Assisted" to "Human-Governed, Agent-Orchestrated"</h2>
+
+            <p>The old paradigm: humans do work, tools help them.</p>
+
+            <p>The new paradigm: agents do work, humans govern them.</p>
+
+            <p>This distinction is not semantic. It changes everything.</p>
+
+            <div class="highlight">
+                <strong>The new core human skill isn't coding. It's context engineering.</strong><br><br>
+                Context engineering means designing and maintaining the knowledge systems that agents need to work effectively: the context lake (a knowledge graph of your architecture, policies, and patterns), the skills library, the observability layer, the compliance rules. Context engineers are information architects who build the rails agents run on.
+            </div>
+
+            <div class="highlight">
+                <strong>The new safety net isn't code review. It's observability.</strong><br><br>
+                When agents ship code faster than humans can review it, code review ceases to be a safety mechanism. Instead, observability becomes your primary line of defence: continuous telemetry, automated anomaly detection, and agents that fix their own regressions based on real-time data.
+            </div>
+
+            <div class="highlight">
+                <strong>The new governance model isn't periodic audits. It's compliance-as-code.</strong><br><br>
+                Regulatory controls are baked directly into agent logic. Agents are prevented from generating non-compliant code in the first place. Continuous, not retrospective. Preventive, not detective.
+            </div>
+
+            <p>This is the uncomfortable reality that reshapes the entire SDLC.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>Five Core Paradigm Shifts</h2>
+
+            <h3>1. Ceremony Toil: Eradicated</h3>
+            <p>No tickets. No sprints. No story points. No planning poker. No PR queues. No separate QA phase. No release trains.</p>
+
+            <p>These mechanisms existed to coordinate humans. Agents don't need coordination in that form.</p>
+
+            <p>Instead: a <strong>centralised context lake</strong>—a knowledge graph that serves as the single source of truth. Agents read from it to understand architecture, patterns, policies, and existing designs. They write to it continuously, updating it with their discoveries and decisions.</p>
+
+            <p>Requirements aren't dictated upfront. They're discovered through rapid agentic iteration. Design isn't predefined. It emerges through synthesis. The entire notion of "planning poker" or "story point estimation" becomes absurd when agents can generate a working prototype in hours.</p>
+
+            <p>The payoff: <strong>10x–20x velocity</strong> by commoditising the implementation layer.</p>
+
+            <h3>2. Fresh Environments: Just-in-Time Provisioning</h3>
+            <p>Your current SDLC requires 6 rings: Dev, QA, Staging, Canary, Early Adopter, GA. Each ring is static, shared, brittle. Environment setup takes 2 weeks. Testing happens in windows. Agents get blocked by stale infrastructure.</p>
+
+            <p>The dark factory inverts this: agents provision full-stack environments on-demand. Complete Dev and Test isolation, spun up and torn down intra-day. Not "sandboxes" (routing overlays that miss context). Full Kubernetes stamps with complete stack isolation.</p>
+
+            <p>The payoff: agents can iterate in real-time. Humans can get working prototypes in hours, not days. Fresh environments replace the weeks-long environment-setup toil.</p>
+
+            <h3>3. Agentic Attestation: Compliance Without Humans</h3>
+            <p>This is the paradigm shift that will shock compliance and audit teams.</p>
+
+            <p>Currently: a human reviews code, approves it. Their approval is the compliance evidence.</p>
+
+            <p>In the dark factory: an agent analyses code against your policies—security, architecture, standards, SOC2 requirements. The agent documents its reasoning: what checks passed, what thresholds were met, what risks were evaluated. This audit trail becomes legally equivalent to human review.</p>
+
+            <p><strong>Agentic attestation</strong> satisfies SOC2, FedRamp, and ISO 27001 because:</p>
+            <ul>
+                <li>Every decision is documented with complete reasoning (chain of thought)</li>
+                <li>Decisions are deterministic and repeatable</li>
+                <li>The audit trail is complete and tamper-proof</li>
+                <li>Compliance is continuous, not periodic</li>
+            </ul>
+
+            <p>Auditors don't see "John approved this." They see: "Security check: passed. Architecture check: passed. Standards compliance: passed. Reasoning: [complete logic]."</p>
+
+            <p>Which provides better evidence?</p>
+
+            <h3>4. Monitoring & Observability: The Last Line of Defence</h3>
+            <p>Every other safeguard has been absorbed or eliminated: design review, code review, QA phase, CAB sign-off. What's left?</p>
+
+            <p><strong>Monitoring and observability become the primary safety mechanism.</strong></p>
+
+            <p>When agents ship code continuously, alerts and dashboards designed for humans become useless. A human can't review 500 deployments per day. But agents can monitor all 500, detect regressions in real-time, and auto-remediate.</p>
+
+            <p>M&O shifts from a dashboarding tool to a closed-loop system. Agents ship code. Telemetry feeds back to the same agent. The agent detects regression and fixes it—before a human knows there's a problem.</p>
+
+            <p>This is where the dark factory's safety model actually improves over human gatekeeping. Humans are slow and attention-limited. Agents are fast and tireless.</p>
+
+            <h3>5. Fresh Infrastructure Architecture: Decoupled Deployment from Release</h3>
+            <p>Agents naturally decouple deployment from release. Code gets deployed continuously—every change, as soon as it's verified, produces an artifact that lands in production behind a feature flag.</p>
+
+            <p>Release is a separate decision, driven by business rules or feature toggle, not deployment timing.</p>
+
+            <p>The payoff: evergreen deployment. 24/7 progression. No code-freeze windows except when resource constraints or critical business events demand it. No release trains. No batching. No coordination overhead.</p>
+
+            <p>Agents handle progressive rollouts, canary analysis, traffic shaping, automatic rollback. Humans define the policies. Agents execute.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>Governance: From Audits to Guardrails</h2>
+
+            <p>The uncomfortable truth: your current compliance framework is built for humans.</p>
+
+            <p>It assumes humans review code, humans approve changes, humans test in stages. It's reactive: you audit after the fact.</p>
+
+            <p>The agentic SDLC requires new controls:</p>
+
+            <p><strong>Compliance-as-Code</strong>: Regulatory rules are baked into agent logic. Agents cannot generate code that violates SOC2, FedRamp, or your internal standards. Non-compliant patterns are caught before they reach a repository, not after.</p>
+
+            <p><strong>Continuous Evals</strong>: Day-to-day validation that agents are producing consistent, correct results. Not quarterly audits. Not sample-based testing. Continuous measurement.</p>
+
+            <p><strong>Context Rot Prevention</strong>: Agents require deep context. Over time, that context becomes stale. Dedicated agents refresh and sanitise context, preventing hallucination loops and ensuring agents work with current, accurate information.</p>
+
+            <p><strong>Break-Glass Procedure</strong>: When an agent enters a decision loop it can't resolve, or when confidence drops below thresholds, a human escalates and takes manual control. This isn't a failure. It's by design.</p>
+
+            <p><strong>Agentic Attestation for Audit</strong>: Every autonomous change is logged with complete reasoning. Auditors can inspect the chain of thought for any deployment, any code change. This provides transparency that human reviews never could.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>Economics: The Build vs. Buy Inflection</h2>
+
+            <p>Here's the strategic inflection: agentic platforms have commoditised the implementation layer.</p>
+
+            <p>Historically, "buying" was the default because building was expensive—months of human coding, high risk, long timelines. Buying (SaaS) was fast.</p>
+
+            <p>Now, agentic platforms allow small teams to orchestrate autonomous agents that generate, test, and deploy features with 10x–20x velocity. The total cost of ownership for building a bespoke solution is often <em>lower</em> than licensing fees for generic SaaS.</p>
+
+            <p>For legacy-heavy organisations (OutSystems with O11), this is transformative. Agents can auto-document, refactor, and bridge legacy code into modern architectures—something no vendor COTS solution does.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>Human Roles in the Dark Factory</h2>
+
+            <p>The shift isn't "fewer people." It's "different roles."</p>
+
+            <p><strong>Gone:</strong></p>
+            <ul>
+                <li>Release managers (agents orchestrate)</li>
+                <li>On-call SREs (agents detect and remediate)</li>
+                <li>CAB members (policy decides)</li>
+                <li>QA test cycles (agents validate)</li>
+            </ul>
+
+            <p><strong>Emerging:</strong></p>
+            <ul>
+                <li><strong>Context Engineers</strong>: Design and maintain the context lake, skills library, and knowledge systems</li>
+                <li><strong>Orchestrators</strong>: Define policies, handle exceptions, make high-level decisions</li>
+                <li><strong>Attestation Officers</strong>: Ensure agentic attestation meets compliance requirements</li>
+                <li><strong>Observability Architects</strong>: Design M&O systems that serve as safety layers for autonomous workflows</li>
+                <li><strong>Break-Glass Handlers</strong>: Escalation point when agents need human judgment</li>
+            </ul>
+
+            <p>One critical shift: <strong>PRs are no longer knowledge transfer.</strong></p>
+
+            <p>When agents produce code, PRs cease to be how junior engineers learn the codebase. Instead, PRs become policy validation checkpoints. The value shifts from "is this correct?" (agents handle that) to "does this align with our strategy?" (humans decide that).</p>
+
+            <p>Engineers upskill by interacting with agents in real-time, getting feedback instantly, understanding architectural decisions through collaboration—not by reading PRs days later.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>The Path Forward: Six Phases</h2>
+
+            <p>You don't flip a switch to dark factory. You build incrementally:</p>
+
+            <ul>
+                <li><strong>Phase 1</strong>: Agents analyse every commit, auto-approve compliant code, humans review exceptions</li>
+                <li><strong>Phase 2</strong>: Continuous testing, agents decide readiness based on metrics</li>
+                <li><strong>Phase 3</strong>: Autonomous release orchestration with phased rollouts</li>
+                <li><strong>Phase 4</strong>: Multi-region automation with off-peak scheduling, fresh environments on-demand</li>
+                <li><strong>Phase 5</strong>: Self-improving backlog (agents monitor feedback, create tickets), continuous evals</li>
+                <li><strong>Phase 6</strong>: Full dark factory—24/7 autonomous, humans design policy and govern exceptions</li>
+            </ul>
+
+            <p>Each phase compounds. By Phase 3, you've eliminated release bottlenecks. By Phase 6, your SDLC operates at machine speed with better compliance, better observability, and better reliability than human gatekeeping ever provided.</p>
+
+            <div class="section-divider"></div>
+
+            <h2>The Uncomfortable Reality</h2>
+
+            <p>Teams that build dark factory SDLCs will ship 10x faster. But that's not the uncomfortable part.</p>
+
+            <p>The uncomfortable part is that your current SDLC—the one you've optimised for years—is dead. Not broken. Not slow. Dead.</p>
+
+            <p>The ceremonies, the gates, the reviews, the approval processes—they're all predicated on humans making decisions. Agents make decisions faster, more consistently, with better audit trails. Agents never get tired. Agents don't forget. Agents don't make exceptions.</p>
+
+            <p>Your compliance will actually improve. Your security will improve. Your reliability will improve. But only if you accept that governance moves from "approval gates" to "policy guardrails," and safety moves from "human oversight" to "observability as a closed loop."</p>
+
+            <p>The question isn't whether dark factory SDLCs are safe or compliant. They're <em>more</em> safe and <em>more</em> compliant than human-gatekeeping ever was.</p>
+
+            <p>The question is: are you going to build one, or are you going to optimise a dead paradigm while your competitors operate at machine speed?</p>
+
+            <p>The infrastructure exists. The economics are compelling. The capability is undeniable.</p>
+
+            <p>But the hardest part will be letting go of the SDLC you've spent decades building—and accepting that its replacement doesn't look like anything you've seen before.</p>
+
+            <div class="section-divider"></div>
+
+            <div class="series-nav">
+                <strong>📚 Continue the Series</strong>
+                <p><strong>Next:</strong> <a href="#part-2">Part 2: The Alignment Crisis—Why Speed Breaks Your Team</a></p>
+                <p>Discover why agents making decisions at lightning speed breaks team alignment, and why current tools can't scale to agentic velocity.</p>
+            </div>
+
+            <div class="footer">
+                <p>© 2026 OutSystems. Published in OutSystems Engineering.</p>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

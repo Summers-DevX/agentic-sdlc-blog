@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Agentic Sessions - Part 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 728px;
+            margin: 0 auto;
+            height: 600px;
+            background: linear-gradient(135deg, #1a3a34 0%, #00d4a8 50%, #00d4ff 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 30px 40px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 168, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .outsystems-logo {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            color: #00d4a8;
+            line-height: 1.2;
+            text-align: center;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .series-badge {
+            background: rgba(0, 212, 168, 0.2);
+            border: 1px solid rgba(0, 212, 168, 0.5);
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+
+        .hero-title span.accent-teal {
+            color: #00d4a8;
+        }
+
+        .hero-title span.accent-cyan {
+            color: #00d4ff;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 16px;
+            max-width: 100%;
+        }
+
+        .hero-media {
+            width: 100%;
+            height: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #00d4a8;
+            box-shadow: 0 0 30px rgba(0, 212, 168, 0.6), inset 0 0 20px rgba(0, 212, 255, 0.2);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Article Section */
+        .article {
+            max-width: 728px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #7a7a7a;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            color: #3a3a3a;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .article-content li {
+            margin-bottom: 12px;
+            color: #3a3a3a;
+        }
+
+        .article-content strong {
+            color: #3a3a3a;
+            font-weight: 600;
+        }
+
+        .article-content em {
+            color: #3a3a3a;
+            font-style: italic;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 30px 0 15px 0;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #7a7a7a;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .article-content hr {
+            border: none;
+            height: 1px;
+            background: #e0e0e0;
+            margin: 40px 0;
+        }
+
+        .article-content a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .article-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 500px;
+                padding: 30px 20px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                font-size: 32px;
+            }
+
+            .article {
+                padding: 0 20px;
+            }
+
+            .article-content h2 {
+                font-size: 24px;
+            }
+
+            .article-content h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-header">
+            
+            <div class="series-badge">Part 3 of 3</div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="accent-teal">Collaborative</span> <span class="accent-cyan">Agentic</span> Sessions
+            </h1>
+            <p class="hero-subtitle">Synchronous, real-time collaboration where humans and agents build together, at machine speed.</p>
+
+            <div class="hero-media">
+                <video autoplay muted loop playsinline>
+                    <source src="diagram-part3.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <img src="profile.jpg" alt="London Summers" class="profile-image">
+            <div class="profile-info">
+                <h3>by London Summers</h3>
+                <p>5 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Section -->
+    <article class="article">
+        <div class="article-meta">
+        </div>
+
+        <div class="article-content">
+
+        <p>The SDLC breaks at agentic speed because coordination fails. Tickets become stale before humans decide. 1000 PRs per week pile up with no review possible. Slack threads scatter context across channels. Jira tickets describe features the agent already shipped. There's no shared space where the team can see what's being built and course correct in real-time.</p>
+
+        <p>Traditional tools assume sequential handoffs. Plan, Build, Review, Test, Deploy. Agents obliterate that timeline. You need a completely different model: one where planning, context-gathering, decision-making, and development happen simultaneously, in one place, with everyone watching the same code materialise.</p>
+
+        <p>That model is collaborative agentic sessions.</p>
+
+        <h2>From Separate Phases to Continuous Collaboration</h2>
+
+        <p>The traditional SDLC separates concerns: planning, building, review, validation, deployment.</p>
+
+        <p>This made sense when everything happened serially. Plan the feature, Build it, Review, Test and Deploy.</p>
+
+        <p>Agents collapse this timeline. The entire cycle can happen in hours. The phases merge into simultaneity. Decisions emerge as code materializes, not before it.</p>
+
+        <p>You can't plan everything upfront anymore, too much emerges during implementation. You can't review after the fact, too much code ships while you're reviewing. You can't validate in isolation, the feature is already in production.</p>
+
+        <p>The only way to prevent divergence at agentic speed is to collapse the communication gaps. These four stages must happen simultaneously in one shared space:</p>
+
+        <ol>
+            <li><strong>Planning</strong> – Scope and intent emerge in real-time conversation</li>
+            <li><strong>Context-gathering</strong> – Requirements, constraints, and precedents surface as questions</li>
+            <li><strong>Decision-making</strong> – Tradeoffs are discussed and resolved live, not in retrospective reviews</li>
+            <li><strong>Development</strong> – Code is written while everyone watches and contributes</li>
+        </ol>
+
+        <p>One space. One conversation. Real-time. Everyone seeing the same thing.</p>
+
+        <h2>Collaborative Agentic Sessions: A New Primitive</h2>
+
+        <p>Imagine this workflow:</p>
+
+        <p>A PM describes a feature: "We need a payment integration that handles multiple currencies and retries failed transactions automatically."</p>
+
+        <p>A designer sketches the user flow in real-time, sharing their screen. Questions emerge. "Should we show retry status to the customer?" A discussion happens—humans talking to humans, making decisions before any agent writes code. They align on the design.</p>
+
+        <p>A developer (human) asks an architectural question: "How do we ensure atomicity across currency conversion and payment posting?" An architect agent jumps in with options. They discuss tradeoffs. They decide. Throughout, team members can spin up audio huddles within the session, with decisions and key discussion points captured in the chat thread. The agent can also call out specific team members (@pm, @architect) to ensure the right person sees the question.</p>
+
+        <p>Now, an implementation agent starts building, in a sandboxed environment against a git branch, visible to the whole team in real time. It writes code, It runs tests, It asks questions in the chat when it hits ambiguity.</p>
+
+        <p>The PM notices something the agent missed about retry logic. They point it out. The agent course corrects immediately.</p>
+
+        <p>A designer checks the UI. "Can we make the retry status clearer?" The agent updates the code live, and they see the result together.</p>
+
+        <p>Within hours, the feature is built, validated, and aligned. Ready to ship.</p>
+
+        <p>No need to review PRs, the review has been happening all along. Automatic CI back to GIT ensures the build and quality gates are met.</p>
+
+        <p><strong>This isn't magic. It's a different mental model.</strong></p>
+
+        <img src="cas2.png" alt="CAS Real-Time Collaboration">
+        <p class="image-caption">Real-time decision-making: agents and humans collaborating synchronously. Code changes, discussion, approval, all in one space, all visible.</p>
+
+        <h2>What CAS Provides</h2>
+
+        <p>CAS is a working system that turns a web browser or UI into a shared interface for team-wide collaboration with agents. Think of Claude Code and Slack combined into one application.</p>
+
+        <h3>1. Real-Time Code Visibility</h3>
+        <p>File edits appear as live blocks in the chat, everyone connected sees them instantly. A designer watches UI components render. An architect sees database schema changes. When someone asks "why that pattern?" the answer is visible in the code they're watching.</p>
+
+        <h3>2. Synchronous Multi-Team Collaboration</h3>
+        <p>Multiple team members in the same session via WebSockets. Not scattered across Slack, email, and Jira. When the agent asks a question, the PM, architect, and designer see it simultaneously and can respond immediately. Decisions happen in real-time, not over three async rounds of feedback.</p>
+
+        <h3>3. Session-Scoped Git Branches</h3>
+        <p>Each session gets its own git branch with full CI/CD access. Tests run in real-time. Build output appears live. If something fails, the team sees it instantly. No hidden commits to main. No merge surprises.</p>
+
+        <h3>4. Live Tool Visibility</h3>
+        <p>Git operations, shell commands and file edits are all visible to every team member. When the agent runs tests, everyone sees the output. When it provisions infrastructure, the log is visible. No "wait, what did the agent just do?"</p>
+
+        <h3>5. Encrypted Integration</h3>
+        <p>Integrations to GitHub, Jira, Confluence, and Anthropic are all stored for agent access, based on user credentials (human and agent). Security without friction.</p>
+
+        <img src="cas1.png" alt="CAS Login Interface">
+        <p class="image-caption">CAS provides a clean, intuitive entry point for team-wide collaboration.</p>
+
+        <h2>How This Solves the Consensus Problem</h2>
+
+        <p>Velocity without fragmentation: With everyone in the same conversation, seeing the same code materialise in real-time, cracks in understanding surface immediately. A designer says "that's not what I sketched." An architect says "that violates our constraints." A PM says "I didn't ask for that."</p>
+
+        <p>These conflicts are resolved in minutes, not discovered in production a month later.</p>
+
+        <p><strong>Context for agents,</strong> Agents have access to the entire conversation. Requirements, design, architectural decisions, reasoning. They're not building in isolation. They're building within a shared mental model.</p>
+
+        <p><strong>Reduced cognitive load for humans,</strong> Humans aren't reviewing 1000 PRs. They're having a continuous conversation with agents about a feature being built. It's collaborative, not batch review.</p>
+
+        <h2>The Organisational Shift</h2>
+
+        <p>This requires more than tooling. It requires rethinking roles:</p>
+
+        <p><strong>Architects become conversation partners,</strong> not gates. They're in the room as code is being built, making decisions in real time instead of reviewing after the fact.</p>
+
+        <p><strong>Designers become collaborators,</strong> not handoff providers. They're validating implementation as it happens, adjusting designs based on what becomes possible.</p>
+
+        <p><strong>PMs become storytellers and context providers,</strong> not requirement-writers. They describe intent, clarify ambiguity, and keep the narrative aligned.</p>
+
+        <p><strong>Developers become orchestrators,</strong> less hands on coding, more directing agents and handling edge cases that require human judgment.</p>
+
+        <p><strong>Agents become team members,</strong> not production systems running silently. They ask questions. They propose solutions. They're part of the decision-making, with humans making final calls on ambiguity.</p>
+
+        <h2>The Working Implementation: CAS</h2>
+
+        <p>This isn't theoretical anymore. The pattern works. <strong>CAS (Collaborative Agentic Space)</strong> is a working, production-ready reference architecture that proves collaborative agentic sessions are viable at scale.</p>
+
+        <p>Built in Go as an open-source implementation, CAS provides a shared interface for team-wide collaboration with AI agents. Instead of each developer running a local AI assistant in isolation, the entire team connects to a single server where agents can read files, write code, run commands, and commit to git,<strong> while everyone watches and participates in real time.</strong> This is the pattern you can implement in your own tools, on your own infrastructure.</p>
+
+        <p><strong>Key capabilities,</strong></p>
+
+        <ul>
+            <li><strong>No local installation</strong> – Any device with a browser can participate</li>
+            <li><strong>Real-time WebSocket collaboration</strong> – Multiple team members in the same session, watching live</li>
+            <li><strong>Agent tool execution</strong> – File editing, git operations, shell commands visible to all</li>
+            <li><strong>Encrypted API key management</strong> – Anthropic keys stored server-side, never exposed to client</li>
+            <li><strong>GitHub & Jira integration</strong> – OAuth or token-based, fully encrypted</li>
+            <li><strong>Session-scoped working directories</strong> – Each collaborative session points to a specific project or repository</li>
+            <li><strong>Live tool visibility</strong> – File edits and command output appear as collapsible blocks in the chat, visible to all teammates</li>
+            <li><strong>Document uploads</strong> – PDFs, images, and documentation can be uploaded; the agent reads and summarises them automatically</li>
+        </ul>
+
+        <p>The architecture is clean: browsers connect via WebSocket to a CAS server that manages session state, handles authentication, encrypts credentials, and broadcasts every action to all connected clients.</p>
+
+        <p><strong>This is what alignment at agentic speed looks like in practice.</strong></p>
+
+        <h2>Early Stages & Planned Evolution</h2>
+
+        <p>CAS is in very early stages. This is the foundation. What comes next is far more ambitious.</p>
+
+        <p><strong>Immediate roadmap,</strong></p>
+
+        <p><strong>Native mobile support (iOS & Android)</strong> – The entire CAS experience on your phone. Design, code, build, and deploy on the go. Not a stripped-down mobile view. Full parity with desktop. Collaborate from anywhere, not just at your desk.</p>
+
+        <p><strong>Intelligent LLM Gateway</strong> – CAS won't lock you into a single model. Instead, it routes prompts to the most cost-effective and capable model for the task:</p>
+
+        <ul>
+            <li><strong>Prompt-level routing</strong> – User defines rules: "routine code generation → Haiku", "architecture decisions → Opus", "security review → specialised model"</li>
+            <li><strong>Real-time cost monitoring</strong> – See token usage and costs live in the session. Know exactly which decisions consumed the most compute</li>
+            <li><strong>Dynamic model selection</strong> – The agent recommends escalation: "this architectural decision needs deeper reasoning, switching to Opus (estimated +$0.15 for this task)"</li>
+            <li><strong>Cost-optimised multi-model streams</strong> – Don't waste Opus-level reasoning on boilerplate code. Each task gets the right model for the right price</li>
+            <li><strong>User-configurable cost policies</strong> – Set budgets per session, per task type, per team. Agents respect the constraints</li>
+        </ul>
+
+        <p>This directly solves the token ROI problem from Part 1, you don't pay for reasoning you don't need, and you don't cheap out on decisions that require it.</p>
+
+        <p><strong>Forward-looking capabilities in development,</strong></p>
+
+        <p>The roadmap focuses on three macro-priorities:</p>
+
+        <h3>1. Economic Sustainability</h3>
+
+        <p>Intelligent model routing ensures teams aren't burning budget on the wrong tools. Real-time cost monitoring, dynamic model selection, and user-configurable budgets make agentic development economically viable at scale. Without this, teams overspend on high-capability models for routine tasks or underspend and compromise quality on critical decisions.</p>
+
+        <h3>2. Omnipresent Collaboration</h3>
+
+        <p>Agents work on your devices, in your spaces, at your pace. Native iOS/Android apps with full parity to desktop. Integrated voice/video so conversations stay in the session. Async handoffs so teams across time zones can collaborate without waiting. The pattern, collaboration happens wherever work happens, not just at a desk.</p>
+
+        <img src="cas3.png" alt="CAS On the Go">
+        <p class="image-caption">Collaborate, design, code, build, and deploy from anywhere. Full CAS experience on mobile, no compromise on capability.</p>
+
+        <h3>3. Real-Time Guardrails</h3>
+
+        <p>Validation shifts from post-merge gates to live-development checks. Security scanning as code is written, not weeks later in a security review. Performance budgeting that prevents regressions before they're committed. Accessibility validation continuous during UI development. Specialised agents (security, performance, architecture) work in parallel, each contributing to decisions as they emerge.</p>
+
+        <p>The thesis, collaborative agentic sessions are only viable if they're economically sustainable and omnipresent. Economic sustainability means paying for the right model at the right time. Omnipresence means collaboration happens where work happens. Real-time guardrails mean compliance and quality are built in, not bolted on. Together, these three priorities make agentic development scale indefinitely.</p>
+
+        <h2>What Needs to Change</h2>
+
+        <p>Current tools won't work. Everything needs to be rewritten from scratch:</p>
+
+        <ul>
+            <li><strong>Git branching</strong> - Linear histories and batched reviews don't fit continuous collaboration. Branches become sessions, not isolation mechanisms.</li>
+            <li><strong>Communication channels</strong> - Slack threads are too ephemeral. Conversations need to be tied to code, context, and decisions.</li>
+            <li><strong>Change validation</strong> - PRs are retrospective. Validation happens during development, not after.</li>
+            <li><strong>Architecture guardrails</strong> - Real time validation, not post-merge checks.</li>
+            <li><strong>Deployment models</strong> - Code is deployed as it's validated, not batched into releases.</li>
+        </ul>
+
+        <h2>The Future is Synchronous Collaboration at Agentic Speed</h2>
+
+        <p>The SDLC didn't evolve to handle agent generated code flowing at machine speed. It broke.</p>
+
+        <p>The fix isn't better PRs or faster reviews. It's a completely different model, <strong>synchronous, real time, multi role collaboration where everyone sees what's being built, everyone contributes to decisions, and alignment happens continuously, not retrospectively.</strong></p>
+
+        <p>This is what collaborative agentic sessions enable. Not agents replacing humans. Humans and agents working together in a shared space, at shared speed, with shared context.</p>
+
+        <p>It's harder than it sounds. It requires trust. It requires psychological safety. It requires everyone to participate in real time rather than hide behind async communication.</p>
+
+        <p>But it's the only way to scale agentic development without burning through a billion tokens building the wrong thing.</p>
+
+        <p>CAS proves it's possible. The question now is, will your organisation build it, or will you optimise a dead paradigm while your competitors operate at machine speed?</p>
+
+        <p>The infrastructure exists. The reference implementation is available. The capability is undeniable.</p>
+
+        <p>The hardest part will be letting go of the SDLC you've spent decades building and accepting that its replacement doesn't look like anything you've seen before.</p>
+
+        <h2>Attribution</h2>
+
+        <p>This part of series is built on concepts from <a href="https://maggieappleton.com/zero-alignment">Maggie Appleton's work on zero-alignment</a>.</p>
+
+        </div>
+    </article>
+</body>
+</html>
